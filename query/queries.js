@@ -40,39 +40,39 @@ db.restaurants.find({"location.coordinates.0": {$lt:-95.754168}}, {_id: 0})
 
 // 11. Trobar restaurants que no preparen 'American', amb qualificació > 70 i longitud < -65.754168.
 
-db.restaurants.find({ $and: [{"cuisine": {$ne: "American"}} , {"grades.score":{$gt:70}}, {"location.coordinates.0": {$lt:-65.754168}}]}, {_id: 0})
+db.restaurants.find({ $and: [{cuisine: {$ne: "American"}} , {"grades.score":{$gt:70}}, {"location.coordinates.0": {$lt:-65.754168}}]}, {_id: 0})
 
 // 12. El mateix que l'anterior però sense usar operador $and.
 
-db.restaurants.find({ "cuisine": {$ne: "American" } ,"grades.score":{$gt:70},"location.coordinates.0": {$lt:-65.754168}}, {_id: 0})
+db.restaurants.find({ cuisine: {$ne: "American" } ,"grades.score":{$gt:70},"location.coordinates.0": {$lt:-65.754168}}, {_id: 0})
 
 // 13. Trobar restaurants que no són 'American', grau 'A', i no són de Brooklyn. Ordenats per cuisine descendent.
 
-db.restaurants.find({"cuisine": {$ne: "American"}, "grades.grade": "A", "borough": {$ne: "Brooklyn"}}, {_id:0}).sort({cuisine:-1})
+db.restaurants.find({cuisine: {$ne: "American"}, "grades.grade": "A", borough: {$ne: "Brooklyn"}}, {_id:0}).sort({cuisine:-1})
 
 // 14. Trobar restaurant_id, name, borough i cuisine on el nom comença amb 'Wil'.
 
-db.restaurants.find({"name": {"$regex": /Wil.*/} }, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
+db.restaurants.find({name: {$regex: /Wil.*/} }, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
 
 // 15. Trobar restaurant_id, name, borough i cuisine on el nom acaba en 'ces'.
 
-db.restaurants.find({"name": {"$regex": /ces$/} }, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
+db.restaurants.find({name: {$regex: /ces$/} }, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
 
 // 16. Trobar restaurant_id, name, borough i cuisine on el nom conté 'Reg'.
 
-db.restaurants.find({"name": /Reg/ }, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
+db.restaurants.find({name: /Reg/ }, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
 
 // 17. Trobar restaurants del Bronx que preparen cuina americana o xinesa.
 
-db.restaurants.find({$or: [{"cuisine":"American"}, {"cuisine":"Chinese"}]}, {_id:0})
+db.restaurants.find({$or: [{cuisine:"American"}, {cuisine:"Chinese"}]}, {_id:0})
 
 // 18. Trobar restaurant_id, name, borough i cuisine per a Staten Island, Queens, Bronx o Brooklyn.
 
-db.restaurants.find({$or: [{"borough": "Staten Island"}, {"borough": "Queens"}, {"borough": "Bronx"}, {"borough": "Brooklyn"}]}, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
+db.restaurants.find({$or: [{borough: "Staten Island"}, {borough: "Queens"}, {borough: "Bronx"}, {borough: "Brooklyn"}]}, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
 
 // 19. Trobar restaurant_id, name, borough i cuisine per a restaurants que NO són d'aquests barris.
 
-db.restaurants.find({$nor: [{"borough": "Staten Island"}, {"borough": "Queens"}, {"borough": "Bronx"}, {"borough": "Brooklyn"}]}, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
+db.restaurants.find({$nor: [{borough: "Staten Island"}, {borough: "Queens"}, {borough: "Bronx"}, {borough: "Brooklyn"}]}, {_id:0, restaurant_id:1, name:1, borough:1, cuisine:1 })
 
 // 20. Trobar restaurant_id, name, borough i cuisine amb marcador no superior a 10.
 
@@ -80,11 +80,11 @@ db.restaurants.find({"grades.score": {$lt:10} }, {_id:0, restaurant_id:1, name:1
 
 // 21. Trobar restaurants que preparen peix, no 'American' ni 'Chinees', o nom comença amb 'Wil'.
 
-db.restaurants.find({}, {_id:0})
-
+db.restaurants.find({$or: [ {cuisine: "Seafood" },{cuisine: {$nin:[ "American", "Chinese" ]}}, {name: {$regex: /^Wil.*/}} ]}, { _id:0 })
 
 // 22. Trobar restaurant_id, name, i grades per grau "A", score 11, i data "2014-08-11T00:00:00Z".
 
+db.restaurants.find({"grades.grade": "A", "grades.score": 11, "grades.date": "2014-08-11T00:00:00Z"}, { _id:0, restaurant_id:1, name:1, grades:1})
 
 // 23. Trobar restaurant_id, name i grades on el 2n element té grau "A", score 9 i data "2014-08-11T00:00:00Z".
 
